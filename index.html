@@ -1,0 +1,1792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Pedagogy of Friction — An Interactive Companion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=IBM+Plex+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0807;
+    --bg-2: #12100d;
+    --ink: #ede4cf;
+    --ink-warm: #f5ecd4;
+    --ink-dim: #9a9180;
+    --ink-faded: #5f574c;
+    --copper: #c87848;
+    --copper-bright: #e8935c;
+    --moss: #7b9168;
+    --moss-deep: #5a6d4c;
+    --slate: #4a6370;
+    --slate-deep: #3a4e58;
+    --crimson: #a8341f;
+    --paper: #19150f;
+    --paper-2: #1f1a12;
+    --rule: #2a241c;
+    --gold: #c9a35e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    line-height: 1.55;
+  }
+  body { overflow-x: hidden; }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      radial-gradient(circle at 25% 25%, rgba(200,120,72,0.03) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, rgba(123,145,104,0.02) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .serif { font-family: 'EB Garamond', serif; }
+  .display { font-family: 'Cormorant Garamond', serif; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  header.masthead {
+    padding: 4rem 2rem 2.5rem;
+    border-bottom: 1px solid var(--rule);
+    background: linear-gradient(180deg, #110e0a 0%, var(--bg) 100%);
+    position: relative;
+    overflow: hidden;
+    z-index: 2;
+  }
+  header.masthead::after {
+    content: '§';
+    position: absolute;
+    right: 2rem; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18rem;
+    color: rgba(200,120,72,0.05);
+    line-height: 1;
+    font-style: italic;
+    pointer-events: none;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--copper);
+    margin-bottom: 1.4rem;
+    position: relative;
+    z-index: 2;
+  }
+  .eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 20px; height: 1px;
+    background: var(--copper);
+    vertical-align: middle;
+    margin-right: 0.8rem;
+  }
+  h1.title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(3rem, 7.5vw, 6.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.015em;
+    max-width: 18ch;
+    position: relative;
+    z-index: 2;
+  }
+  h1.title em {
+    font-style: italic;
+    color: var(--copper);
+    font-weight: 300;
+  }
+  .subtitle {
+    font-family: 'EB Garamond', serif;
+    font-size: clamp(1.1rem, 1.5vw, 1.4rem);
+    color: var(--ink-dim);
+    margin-top: 1.8rem;
+    max-width: 62ch;
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.5;
+    position: relative;
+    z-index: 2;
+  }
+  .byline {
+    margin-top: 2.2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--ink-faded);
+    letter-spacing: 0.05em;
+    position: relative;
+    z-index: 2;
+  }
+  .byline span { color: var(--ink-dim); }
+
+  nav.eras {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(10,8,7,0.95);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--rule);
+    padding: 0.85rem 2rem;
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+  nav.eras button {
+    background: transparent;
+    border: 1px solid var(--rule);
+    color: var(--ink-dim);
+    padding: 0.5rem 0.9rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+  }
+  nav.eras button:hover { color: var(--ink); border-color: var(--copper); }
+  nav.eras button.active {
+    background: var(--copper);
+    color: var(--bg);
+    border-color: var(--copper);
+    font-weight: 500;
+  }
+
+  section.sec {
+    padding: 6rem 2rem;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+    z-index: 2;
+  }
+  section.sec .inner { max-width: 1200px; margin: 0 auto; }
+  .sec-header {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2.5rem;
+    align-items: baseline;
+    margin-bottom: 3rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .sec-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--copper);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .sec-tag .tag-sub {
+    display: block;
+    color: var(--ink-faded);
+    margin-top: 0.4rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+  }
+  h2.sec-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2.2rem, 4.5vw, 4rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+  }
+  h2.sec-title em { font-style: italic; color: var(--copper); }
+
+  .lede {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.35rem;
+    font-weight: 400;
+    line-height: 1.6;
+    max-width: 66ch;
+    color: var(--ink);
+    margin-bottom: 3rem;
+  }
+  .lede::first-letter {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4.2rem;
+    font-weight: 400;
+    float: left;
+    line-height: 0.9;
+    margin: 0.08em 0.08em 0 0;
+    color: var(--copper);
+    font-style: italic;
+  }
+
+  .traditions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+  .tradition {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 2rem 1.8rem;
+    position: relative;
+    transition: all 0.3s;
+  }
+  .tradition.constructivism { border-top: 3px solid var(--moss); }
+  .tradition.critical { border-top: 3px solid var(--copper); }
+  .tradition.ecology { border-top: 3px solid var(--slate); }
+  .tradition:hover { transform: translateY(-3px); }
+  .tradition h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 500;
+    line-height: 1.1;
+    margin-bottom: 0.4rem;
+  }
+  .tradition h3 em { font-style: italic; font-weight: 400; }
+  .tradition .t-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+  }
+  .constructivism .t-label { color: var(--moss); }
+  .critical .t-label { color: var(--copper); }
+  .ecology .t-label { color: var(--slate); }
+  .tradition p {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.05rem;
+    color: var(--ink-dim);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  .tradition p strong { color: var(--ink); font-weight: 500; }
+  .tradition .figures {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink-faded);
+    line-height: 1.7;
+    border-top: 1px solid var(--rule);
+    padding-top: 1rem;
+    margin-top: 1rem;
+  }
+
+  .milestones {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+  .milestone {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 1.8rem;
+    transition: all 0.25s;
+  }
+  .milestone:hover { border-color: var(--copper); transform: translateY(-2px); }
+  .milestone-year {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--copper);
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .milestone-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 0.7rem 0 0.4rem;
+    line-height: 1.15;
+  }
+  .milestone-actors {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--ink-faded);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.9rem;
+  }
+  .milestone-body {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.05rem;
+    color: var(--ink-dim);
+    line-height: 1.6;
+  }
+  .milestone-body strong { color: var(--ink); font-weight: 500; }
+
+  .deep-dive {
+    background: linear-gradient(135deg, #1a1510 0%, #0f0c08 100%);
+    border: 1px solid var(--copper);
+    padding: 2.8rem 2.5rem;
+    margin: 3rem 0;
+    position: relative;
+  }
+  .deep-dive::before {
+    content: 'CENTRAL CONSTRUCT';
+    position: absolute;
+    top: -10px; left: 2rem;
+    background: var(--bg);
+    color: var(--copper);
+    padding: 0 0.8rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+  }
+  .deep-dive h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+    line-height: 1.05;
+  }
+  .deep-dive h3 em { color: var(--copper); font-style: italic; }
+  .deep-dive-body {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--ink);
+    max-width: 72ch;
+  }
+
+  .interactive {
+    background: #070504;
+    border: 1px solid var(--rule);
+    margin: 2.5rem 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .interactive-header {
+    padding: 1.1rem 1.5rem;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    background: rgba(25,21,15,0.5);
+  }
+  .interactive-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--moss);
+  }
+  .interactive-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  .interactive-body { padding: 1.8rem; }
+
+  button.action {
+    background: transparent;
+    color: var(--copper);
+    border: 1px solid var(--copper);
+    padding: 0.6rem 1.2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  button.action:hover {
+    background: var(--copper);
+    color: var(--bg);
+  }
+  button.action:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .schema-frame {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .schema-side {
+    background: #0a0807;
+    border: 1px solid var(--rule);
+    padding: 1.2rem;
+  }
+  .schema-side.frictionless { border-top: 3px solid var(--crimson); }
+  .schema-side.friction { border-top: 3px solid var(--moss); }
+  .schema-side h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+  .schema-side.frictionless h4 { color: var(--crimson); }
+  .schema-side.friction h4 { color: var(--moss); }
+  .schema-side .subhead {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--ink-faded);
+    margin-bottom: 1rem;
+  }
+  .schema-canvas {
+    width: 100%;
+    aspect-ratio: 1.1;
+    background: #050404;
+    border: 1px solid var(--rule);
+    position: relative;
+    overflow: hidden;
+  }
+  .schema-canvas svg { width: 100%; height: 100%; display: block; }
+  .schema-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink-dim);
+    margin-top: 0.8rem;
+    min-height: 2em;
+    line-height: 1.5;
+  }
+  .schema-meta .retain {
+    display: inline-block;
+    padding: 2px 8px;
+    margin-top: 0.4rem;
+    border-radius: 2px;
+    font-weight: 700;
+  }
+  .schema-meta .retain.poor { background: var(--crimson); color: var(--ink); }
+  .schema-meta .retain.strong { background: var(--moss); color: var(--bg); }
+  .schema-controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .timeline-container {
+    margin: 1rem 0;
+  }
+  .timeline-legend {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink-dim);
+  }
+  .timeline-legend .dot {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+  }
+  .tl-rail {
+    position: relative;
+    height: 100px;
+    margin: 2rem 0;
+    background: #050404;
+    border: 1px solid var(--rule);
+  }
+  .tl-rail::before {
+    content: '';
+    position: absolute;
+    left: 40px; right: 40px;
+    top: 50%;
+    height: 1px;
+    background: var(--ink-faded);
+  }
+  .tl-thinker {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s;
+    z-index: 2;
+    background: var(--bg);
+    border: 2px solid;
+  }
+  .tl-thinker.constructivism { border-color: var(--moss); }
+  .tl-thinker.critical { border-color: var(--copper); }
+  .tl-thinker.ecology { border-color: var(--slate); }
+  .tl-thinker:hover, .tl-thinker.active {
+    transform: translate(-50%, -50%) scale(1.6);
+    background: var(--ink);
+    box-shadow: 0 0 0 6px rgba(200,120,72,0.2);
+  }
+  .tl-year-labels {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink-faded);
+  }
+  .thinker-card {
+    margin-top: 1.5rem;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 2rem;
+    min-height: 180px;
+    transition: opacity 0.3s;
+  }
+  .thinker-card.empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-faded);
+    font-style: italic;
+    font-family: 'EB Garamond', serif;
+    font-size: 1.1rem;
+    text-align: center;
+  }
+  .thinker-left .year {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--copper);
+    line-height: 1;
+  }
+  .thinker-left .trad {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-top: 0.6rem;
+    padding: 3px 8px;
+    display: inline-block;
+    border: 1px solid;
+  }
+  .trad.constructivism { color: var(--moss); border-color: var(--moss); }
+  .trad.critical { color: var(--copper); border-color: var(--copper); }
+  .trad.ecology { color: var(--slate); border-color: var(--slate); }
+  .thinker-right h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 1.1;
+  }
+  .thinker-right .work {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    color: var(--ink-dim);
+    font-size: 1.05rem;
+    margin: 0.3rem 0 1rem;
+  }
+  .thinker-right .contrib {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.05rem;
+    color: var(--ink);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  .thinker-right .friction-note {
+    background: rgba(200,120,72,0.08);
+    border-left: 3px solid var(--copper);
+    padding: 0.8rem 1rem;
+    font-family: 'EB Garamond', serif;
+    font-size: 0.98rem;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  .thinker-right .friction-note::before {
+    content: 'For friction pedagogy: ';
+    color: var(--copper);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    font-style: normal;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  .dimensions-frame {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: stretch;
+  }
+  .dim-svg-wrap {
+    background: #050404;
+    border: 1px solid var(--rule);
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .dim-svg-wrap svg {
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+  }
+  .dim-quad {
+    cursor: pointer;
+    transition: opacity 0.3s;
+  }
+  .dim-quad:hover { opacity: 1 !important; }
+  .dim-panel {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 400px;
+  }
+  .dim-panel .dim-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 1.1;
+  }
+  .dim-panel .dim-subtitle {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    color: var(--copper);
+    font-size: 1.1rem;
+    margin-bottom: 1.2rem;
+  }
+  .dim-panel .dim-def {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.05rem;
+    color: var(--ink);
+    line-height: 1.6;
+    margin-bottom: 1.3rem;
+  }
+  .dim-row {
+    margin-bottom: 1rem;
+  }
+  .dim-row .row-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faded);
+    margin-bottom: 0.3rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .dim-row .row-label::before {
+    content: '';
+    width: 8px; height: 8px;
+  }
+  .dim-row.preserves .row-label { color: var(--moss); }
+  .dim-row.collapses .row-label { color: var(--crimson); }
+  .dim-row.practice .row-label { color: var(--copper); }
+  .dim-row p {
+    font-family: 'EB Garamond', serif;
+    font-size: 1rem;
+    color: var(--ink-dim);
+    line-height: 1.55;
+  }
+
+  .scenario-box {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .scenario-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faded);
+    margin-bottom: 1rem;
+  }
+  .scenario-text {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: var(--ink);
+    font-style: italic;
+  }
+  .choices {
+    display: grid;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+  .choice {
+    background: #0a0807;
+    border: 1px solid var(--rule);
+    padding: 1.1rem 1.3rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'EB Garamond', serif;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: var(--ink);
+    text-align: left;
+  }
+  .choice:hover { border-color: var(--copper); background: rgba(200,120,72,0.04); }
+  .choice.selected { border-color: var(--copper); background: rgba(200,120,72,0.08); }
+  .choice .letter {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--copper);
+    margin-right: 0.8rem;
+    font-size: 0.9rem;
+  }
+  .feedback {
+    background: #050404;
+    border: 1px solid var(--copper);
+    padding: 1.8rem;
+    margin-top: 1.5rem;
+  }
+  .feedback h5 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+  .dim-meter {
+    display: grid;
+    grid-template-columns: 130px 1fr 60px;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+  }
+  .dim-meter .dim-name { color: var(--ink-dim); }
+  .dim-meter .dim-bar-wrap {
+    background: #1a1510;
+    height: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .dim-meter .dim-bar {
+    height: 100%;
+    transition: width 0.6s ease;
+  }
+  .dim-meter .dim-bar.preserved { background: var(--moss); }
+  .dim-meter .dim-bar.partial { background: var(--gold); }
+  .dim-meter .dim-bar.collapsed { background: var(--crimson); }
+  .dim-meter .dim-val {
+    text-align: right;
+    font-size: 0.7rem;
+  }
+  .feedback-text {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--ink);
+    margin-top: 1.2rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--rule);
+  }
+  .scenario-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .sorter-item {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 1rem 1.3rem;
+    margin-bottom: 0.6rem;
+    font-family: 'EB Garamond', serif;
+    font-size: 1.05rem;
+    color: var(--ink);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.25s;
+    flex-wrap: wrap;
+  }
+  .sorter-item.sorted { opacity: 0.55; }
+  .sorter-item.sorted.productive { border-left: 3px solid var(--moss); }
+  .sorter-item.sorted.exclusionary { border-left: 3px solid var(--crimson); }
+  .sorter-item.sorted.context { border-left: 3px solid var(--gold); }
+  .sorter-buttons {
+    display: flex;
+    gap: 0.4rem;
+    flex-shrink: 0;
+  }
+  .sorter-buttons button {
+    background: transparent;
+    border: 1px solid var(--rule);
+    color: var(--ink-dim);
+    padding: 0.35rem 0.7rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .sorter-buttons button:hover { color: var(--ink); }
+  .sorter-buttons button.prod:hover, .sorter-buttons button.prod.active { border-color: var(--moss); color: var(--moss); }
+  .sorter-buttons button.exc:hover, .sorter-buttons button.exc.active { border-color: var(--crimson); color: var(--crimson); }
+  .sorter-buttons button.ctx:hover, .sorter-buttons button.ctx.active { border-color: var(--gold); color: var(--gold); }
+  .sorter-feedback {
+    font-family: 'EB Garamond', serif;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--ink-dim);
+    padding: 0.7rem 1.3rem 0;
+    line-height: 1.5;
+    flex-basis: 100%;
+    border-top: 1px dashed var(--rule);
+    margin-top: 0.7rem;
+    display: none;
+  }
+  .sorter-item.sorted .sorter-feedback { display: block; }
+  .sorter-item.sorted.correct .sorter-feedback { color: var(--moss); }
+  .sorter-item.sorted.incorrect .sorter-feedback { color: var(--gold); }
+  .sorter-content {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .sorter-summary {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--ink-dim);
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border: 1px dashed var(--rule);
+    text-align: center;
+  }
+  .sorter-summary span { color: var(--copper); font-weight: 700; }
+
+  blockquote.pullquote {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.8rem;
+    font-weight: 300;
+    line-height: 1.25;
+    color: var(--copper);
+    border-left: 3px solid var(--copper);
+    padding: 1.2rem 0 1.2rem 1.8rem;
+    margin: 3rem 0;
+    max-width: 64ch;
+  }
+  blockquote.pullquote cite {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--ink-faded);
+    font-style: normal;
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 1rem;
+    letter-spacing: 0.08em;
+  }
+
+  .note {
+    font-family: 'EB Garamond', serif;
+    font-size: 0.98rem;
+    font-style: italic;
+    color: var(--ink-dim);
+    border-left: 2px solid var(--moss);
+    padding: 0.6rem 1rem;
+    margin: 1rem 0;
+    line-height: 1.55;
+  }
+  .note strong { color: var(--ink); font-style: normal; }
+
+  footer.coda {
+    padding: 5rem 2rem 3rem;
+    text-align: center;
+    background: var(--bg-2);
+    border-top: 1px solid var(--rule);
+    position: relative;
+    z-index: 2;
+  }
+  footer.coda .mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--copper);
+    margin-bottom: 1rem;
+    letter-spacing: 0.2em;
+  }
+  footer.coda p {
+    font-family: 'EB Garamond', serif;
+    font-size: 1rem;
+    color: var(--ink-dim);
+    font-style: italic;
+    max-width: 64ch;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  footer.coda .attrib {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--copper);
+    font-style: normal;
+    margin-top: 1.8rem;
+    letter-spacing: 0.08em;
+  }
+
+  @media (max-width: 900px) {
+    .traditions { grid-template-columns: 1fr; }
+    .schema-frame { grid-template-columns: 1fr; }
+    .dimensions-frame { grid-template-columns: 1fr; }
+    .thinker-card { grid-template-columns: 1fr; gap: 1rem; }
+    .sec-header { grid-template-columns: 1fr; gap: 0.5rem; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  section.sec > .inner > * {
+    animation: fadeUp 0.6s ease both;
+  }
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="eyebrow">An Interactive Companion · Qualifying Paper Supplement</div>
+  <h1 class="title">The Pedagogy of <em>Friction</em></h1>
+  <p class="subtitle">On the preservation of productive resistance in an era where frictionless automation has become the pedagogical default — and on why learning, as a process, has always required something to push back against.</p>
+  <div class="byline"><span>A companion to the qualifying paper by Micah J. Miner.</span> &nbsp;·&nbsp; Move through the argument at your own pace. Every section is interactive.</div>
+</header>
+
+<nav class="eras" id="secNav">
+  <button data-sec="problem" class="active">§ I The Problem</button>
+  <button data-sec="traditions">§ II Three Traditions</button>
+  <button data-sec="thinkers">§ III The Thinkers</button>
+  <button data-sec="dimensions">§ IV Four Dimensions</button>
+  <button data-sec="practice">§ V Friction in Practice</button>
+  <button data-sec="caveat">§ VI The Critical Caveat</button>
+  <button data-sec="forward">§ VII A Path Forward</button>
+</nav>
+
+<section class="sec" id="problem">
+  <div class="inner">
+    <div class="sec-header">
+      <div class="sec-tag">§ I<span class="tag-sub">THE DIAGNOSIS</span></div>
+      <h2 class="sec-title">The output <em>looks like</em> learning.</h2>
+    </div>
+
+    <p class="lede">Something has shifted in classrooms, and it is not primarily about cheating. It is about a deeper and subtler condition in which students produce work that <em>appears</em> to demonstrate understanding but is not accompanied by the cognitive reconstruction that understanding requires. The essay is coherent. The citations are formatted. The argument flows. And the student, asked to explain what they wrote, cannot. This paper names this condition <strong>unproductive success</strong>, and treats it as the defining pedagogical problem of the generative AI era.</p>
+
+    <div class="deep-dive">
+      <h3>Unproductive <em>success</em></h3>
+      <p class="deep-dive-body">Manu Kapur's work on productive failure taught the field that slowing initial performance — letting students struggle before instruction — produces more durable learning. The inverse condition is its shadow: performance without the struggle that gives performance meaning. Generative AI, operating as what we might call <strong style="color:var(--copper)">tertiary algorithmicity</strong> — algorithmically-created and algorithmically-curated symbolic content — makes unproductive success not an edge case but the path of least resistance. The output arrives fully formed. The schema was never built. The learner has been <em>bypassed</em>.</p>
+    </div>
+
+    <div class="interactive">
+      <div class="interactive-header">
+        <div>
+          <div class="interactive-label">Interactive · Schema Construction</div>
+          <div class="interactive-title">What happens when the struggle is dissolved — a visual demonstration</div>
+        </div>
+        <div class="mono" style="font-size:0.7rem;color:var(--ink-faded)">Press Begin. Then Test.</div>
+      </div>
+      <div class="interactive-body">
+        <div class="schema-frame">
+          <div class="schema-side frictionless">
+            <h4>Pathway A · Frictionless</h4>
+            <div class="subhead">Prompt issued. Output received. Submitted.</div>
+            <div class="schema-canvas">
+              <svg id="svgA" viewBox="0 0 320 280" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+            <div class="schema-meta" id="metaA">Awaiting task. Schema state: none.</div>
+          </div>
+          <div class="schema-side friction">
+            <h4>Pathway B · With Friction</h4>
+            <div class="subhead">Problem encountered. Effort invested. Schema built.</div>
+            <div class="schema-canvas">
+              <svg id="svgB" viewBox="0 0 320 280" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+            <div class="schema-meta" id="metaB">Awaiting task. Schema state: none.</div>
+          </div>
+        </div>
+        <div class="schema-controls">
+          <button class="action" id="schemaBegin">Begin task →</button>
+          <button class="action" id="schemaTest" disabled>Test one week later →</button>
+          <button class="action" id="schemaReset">↺ Reset</button>
+        </div>
+        <div class="note"><strong>What the visualization shows.</strong> In Pathway A, the deliverable appears instantly — a polished surface that, when tested on a new question, reveals it was never structurally connected. In Pathway B, nodes appear slowly as the student works, connections form through effort, and the schema persists and extends when pressed. Unproductive success is the condition in which Pathway A's output is indistinguishable from Pathway B's — until it matters.</div>
+      </div>
+    </div>
+
+    <blockquote class="pullquote">
+      The fluency of the output is the problem. The output looks like learning whether or not learning has occurred.
+      <cite>— Central framing of the pedagogical friction construct</cite>
+    </blockquote>
+  </div>
+</section>
+
+<section class="sec" id="traditions">
+  <div class="inner">
+    <div class="sec-header">
+      <div class="sec-tag">§ II<span class="tag-sub">THEORETICAL INHERITANCE</span></div>
+      <h2 class="sec-title">Three traditions <em>converge</em>.</h2>
+    </div>
+
+    <p class="lede">The argument for friction is not new. It draws from three intellectual traditions that developed largely in parallel across the twentieth century, each arriving at a version of the same insight from different starting points. The constructivists found it through cognition. The critical pedagogues found it through power. The media ecologists found it through environment. Generative AI is the first condition under which all three traditions converge on the same practical demand: preserve the resistance. Designing it away is designing learning away.</p>
+
+    <div class="traditions">
+      <div class="tradition constructivism">
+        <div class="t-label">Tradition I</div>
+        <h3>Constructivism &amp; the <em>Learning Sciences</em></h3>
+        <p>Cognitive disequilibrium is the engine of learning. Growth occurs when existing mental schemas prove inadequate and must be reconstructed through <strong>effortful engagement</strong>. Struggle is not a regrettable side effect of learning; it is the mechanism by which learning happens.</p>
+        <p>From this tradition comes the concept of <strong>desirable difficulties</strong> — interventions that slow performance now to strengthen retention later — and the taxonomy of <strong>productive failure</strong> that makes unproductive success visible as its inverse.</p>
+        <div class="figures">DEWEY · PIAGET · VYGOTSKY · PAPERT · BJORK &amp; BJORK · SWELLER · KAPUR</div>
+      </div>
+      <div class="tradition critical">
+        <div class="t-label">Tradition II</div>
+        <h3>Critical <em>Pedagogy</em></h3>
+        <p>Education is always political. The "banking model" — in which students are treated as passive receptacles to be filled with correct information — denies learners the critical consciousness, or <em>conscientização</em>, required to read and transform the world they live in.</p>
+        <p>Frictionless AI functions as a modernized banking model: seamless, citation-free dispensation of answers that discourage inquiry. Resisting it requires what this paper calls <strong>algorithmic awareness</strong> — an extension of Freire's concept to the interrogation of AI outputs, their biases, and their hidden curricula.</p>
+        <div class="figures">FREIRE · hooks · GIROUX · KRUTKA, HEATH &amp; MASON · BOZKURT ET AL.</div>
+      </div>
+      <div class="tradition ecology">
+        <div class="t-label">Tradition III</div>
+        <h3>Media Ecology &amp; <em>Technoskepticism</em></h3>
+        <p>Communication technologies are not neutral tools. They are <strong>environmental forces</strong> that restructure human consciousness, memory, and social relation. What a technology makes easy, it makes common; what it makes hard, it makes rare; and over time, what is rare becomes forgotten.</p>
+        <p>Applied to generative AI, this tradition asks what cognitive and communal capacities are <em>gained</em> or <em>lost</em> when symbolic production is outsourced to algorithmic generation — and holds that the answer is never only "gained."</p>
+        <div class="figures">McLUHAN · POSTMAN · ONG · TURKLE · STIEGLER</div>
+      </div>
+    </div>
+
+    <blockquote class="pullquote">
+      What is given to the student frictionlessly has not been learned; it has merely arrived.
+      <cite>— A synthesis of the three traditions, applied to generative AI</cite>
+    </blockquote>
+  </div>
+</section>
+
+<section class="sec" id="thinkers">
+  <div class="inner">
+    <div class="sec-header">
+      <div class="sec-tag">§ III<span class="tag-sub">INTELLECTUAL LINEAGE · 1916 — 2024</span></div>
+      <h2 class="sec-title">The <em>lineage</em>, read in order.</h2>
+    </div>
+
+    <p class="lede">A century of thinkers whose work, in retrospect, was preparing the ground for this moment. Click any dot to open the card; color indicates the tradition. The sequence is not a procession toward a predetermined conclusion — several of these scholars would have disagreed sharply with one another — but the through-line is visible enough to be named. Each contributed a piece of what eventually became the case for friction.</p>
+
+    <div class="timeline-container">
+      <div class="timeline-legend">
+        <span><span class="dot" style="background:var(--moss)"></span>Constructivism &amp; Learning Sciences</span>
+        <span><span class="dot" style="background:var(--copper)"></span>Critical Pedagogy</span>
+        <span><span class="dot" style="background:var(--slate)"></span>Media Ecology &amp; Technoskepticism</span>
+      </div>
+      <div class="tl-rail" id="tlRail"></div>
+      <div class="tl-year-labels">
+        <span>1916</span><span>1940</span><span>1970</span><span>1990</span><span>2010</span><span>2024</span>
+      </div>
+      <div class="thinker-card empty" id="thinkerCard">Click any dot on the timeline above to read about the thinker and their contribution to the friction framework.</div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="dimensions">
+  <div class="inner">
+    <div class="sec-header">
+      <div class="sec-tag">§ IV<span class="tag-sub">THE SYNTHESIS</span></div>
+      <h2 class="sec-title">Four dimensions of <em>friction</em>.</h2>
+    </div>
+
+    <p class="lede">Pedagogical friction is the framework this paper offers as a synthesis of the three traditions. It is not a checklist or a technique. It is a claim about which forms of resistance education cannot surrender without surrendering itself. The four dimensions name the locations at which friction must be preserved: inside the individual learner's cognition, within the dialogic space of the classroom, in the student's posture toward their own claims, and across the institutional systems that make the first three possible. Click each quadrant to expand.</p>
+
+    <div class="interactive">
+      <div class="interactive-header">
+        <div>
+          <div class="interactive-label">Interactive · Four-Dimension Explorer</div>
+          <div class="interactive-title">Noetic · Rhetorical · Existential · Infrastructural</div>
+        </div>
+        <div class="mono" style="font-size:0.7rem;color:var(--ink-faded)">Click any quadrant.</div>
+      </div>
+      <div class="interactive-body">
+        <div class="dimensions-frame">
+          <div class="dim-svg-wrap">
+            <svg id="dimSVG" viewBox="0 0 420 420" preserveAspectRatio="xMidYMid meet"></svg>
+          </div>
+          <div class="dim-panel" id="dimPanel">
+            <div class="dim-title" id="dimTitle">Select a dimension</div>
+            <div class="dim-subtitle" id="dimSubtitle">Click any quadrant on the left</div>
+            <div class="dim-def" id="dimDef" style="color:var(--ink-faded);font-style:italic">The four dimensions of pedagogical friction do not operate independently. They interact — a collapse in the infrastructural dimension eventually erodes the others. Each quadrant's detail appears here when selected.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="practice">
+  <div class="inner">
+    <div class="sec-header">
+      <div class="sec-tag">§ V<span class="tag-sub">APPLIED CASES</span></div>
+      <h2 class="sec-title">Friction, in <em>practice</em>.</h2>
+    </div>
+
+    <p class="lede">The framework becomes useful only when it can inform judgment in specific classroom moments. The scenarios below are composite cases drawn from common situations that district leaders, teachers, and deans report encountering. Each scenario offers four possible teacher responses. There is no single correct answer — each option is defensible under some framework — but each also makes visible trade-offs across the four dimensions of friction. The feedback shows what a given choice preserves, diminishes, or collapses. Judgment is the work.</p>
+
+    <div class="interactive">
+      <div class="interactive-header">
+        <div>
+          <div class="interactive-label">Interactive · Classroom Judgment</div>
+          <div class="interactive-title">Scenario simulator — what does each response preserve?</div>
+        </div>
+        <div class="mono" style="font-size:0.7rem;color:var(--ink-faded)" id="scenarioCount">Scenario 1 of 3</div>
+      </div>
+      <div class="interactive-body">
+        <div class="scenario-box">
+          <div class="scenario-tag" id="scTag">CASE · HIGH SCHOOL ENGLISH</div>
+          <div class="scenario-text" id="scText">A ninth-grader submits an essay on <em>To Kill a Mockingbird</em> that is markedly more polished than their prior work. When asked, during class discussion, to explain the central claim of their own essay, they cannot do so. The student does not admit to using AI; they also do not deny it.</div>
+        </div>
+        <div class="choices" id="choicesEl"></div>
+        <div id="feedbackEl"></div>
+        <div class="scenario-nav">
+          <button class="action" id="scPrev">← Previous</button>
+          <button class="action" id="scNext">Next scenario →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="caveat">
+  <div class="inner">
+    <div class="sec-header">
+      <div class="sec-tag">§ VI<span class="tag-sub">A NECESSARY DISTINCTION</span></div>
+      <h2 class="sec-title">Not all friction is <em>productive</em>.</h2>
+    </div>
+
+    <p class="lede">Any framework that valorizes resistance risks becoming a justification for practices that exclude rather than develop. This distinction is the most important caveat in the entire framework. <strong>Productive friction</strong> builds cognitive, rhetorical, and civic capacity; it is the struggle that produces the learner. <strong>Exclusionary friction</strong> is the arbitrary barrier that prevents participation in the first place — the impossible deadline, the unaccommodated test, the unexplained rubric, the language requirement that locks out the very students whose thinking the classroom most needs. The former is pedagogy. The latter is harm wearing pedagogy's clothes.</p>
+
+    <div class="deep-dive">
+      <h3>A <em>working</em> rule of thumb</h3>
+      <p class="deep-dive-body">Friction is <strong>productive</strong> when removing it would shortcut a learner past the cognitive or civic capacity the task is meant to build. Friction is <strong>exclusionary</strong> when removing it would allow a learner to demonstrate capacity they already possess but are being prevented from showing. The difference is not always obvious in the abstract, and several practices sit genuinely in between. The sorting exercise that follows is designed to surface that ambiguity rather than resolve it.</p>
+    </div>
+
+    <div class="interactive">
+      <div class="interactive-header">
+        <div>
+          <div class="interactive-label">Interactive · Judgment Sorter</div>
+          <div class="interactive-title">Classroom practices — productive, exclusionary, or context-dependent?</div>
+        </div>
+        <div class="mono" style="font-size:0.7rem;color:var(--ink-faded)">Choose for each practice.</div>
+      </div>
+      <div class="interactive-body">
+        <div class="sorter-frame" id="sorterFrame"></div>
+        <div class="sorter-summary" id="sorterSummary">Sorted: <span id="sortedCount">0</span> of <span id="sortedTotal">0</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="forward">
+  <div class="inner">
+    <div class="sec-header">
+      <div class="sec-tag">§ VII<span class="tag-sub">CLOSING</span></div>
+      <h2 class="sec-title">The question is not <em>whether</em> AI.</h2>
+    </div>
+
+    <p class="lede">The question this framework leaves on the table is not whether generative AI belongs in education — it is already there, and will not leave. The question is what a school, a classroom, a district, or a teacher is willing to surrender in exchange for the convenience it offers, and what must be actively designed to survive its presence. Friction is a design stance. The alternative to designing for it is not neutrality; it is designing against it by default. Every rubric, every policy, every prompt, every workflow is already answering the question one way or the other. The only choice is whether to answer it deliberately.</p>
+
+    <div class="milestones">
+      <div class="milestone">
+        <div class="milestone-year">01</div>
+        <div class="milestone-title">Name the construct</div>
+        <div class="milestone-actors">Unproductive success · Noetic displacement · The Great Bypass</div>
+        <div class="milestone-body">Practice cannot change what it cannot name. The first move — before any policy — is giving teachers and leaders the vocabulary to see what is actually happening when a fluent output arrives without the learning that should accompany it.</div>
+      </div>
+      <div class="milestone">
+        <div class="milestone-year">02</div>
+        <div class="milestone-title">Design for the four dimensions</div>
+        <div class="milestone-actors">Noetic · Rhetorical · Existential · Infrastructural</div>
+        <div class="milestone-body">Treat friction as an explicit design variable at each dimension. Not every assignment needs to preserve all four, but every assignment implicitly answers which are preserved — and that answer should be a decision, not a default.</div>
+      </div>
+      <div class="milestone">
+        <div class="milestone-year">03</div>
+        <div class="milestone-title">Distinguish productive from exclusionary</div>
+        <div class="milestone-actors">The critical caveat · Every time</div>
+        <div class="milestone-body">Any friction-preserving move must pass the exclusion test before it passes the pedagogy test. A practice that builds capacity for some students while blocking others from participating is not friction — it is a filter.</div>
+      </div>
+      <div class="milestone">
+        <div class="milestone-year">04</div>
+        <div class="milestone-title">Build infrastructural supports</div>
+        <div class="milestone-actors">Policy · Rubrics · Norms · Culture</div>
+        <div class="milestone-body">Individual teachers cannot sustain noetic, rhetorical, and existential friction against an institutional tide of frictionless adoption. The infrastructural dimension is where leadership lives — and where the framework succeeds or fails at scale.</div>
+      </div>
+    </div>
+
+    <blockquote class="pullquote">
+      To design without friction is not to design for ease. It is to design for the dissolution of the learner.
+      <cite>— The closing claim of the framework</cite>
+    </blockquote>
+  </div>
+</section>
+
+<footer class="coda">
+  <div class="mark">— FINIS —</div>
+  <p>A companion piece to the qualifying paper on tertiary algorithmicity and pedagogical friction. The interactives are pedagogical simplifications: they demonstrate the shape of the argument rather than its full form. Thinkers are represented by their most-cited contributions to the construct, not their full intellectual contributions. For the complete argument, see the paper.</p>
+  <div class="attrib">Micah J. Miner · National Louis University · Curriculum, Advocacy &amp; Policy · 2026</div>
+</footer>
+
+<script>
+document.querySelectorAll('#secNav button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const id = btn.dataset.sec;
+    const target = document.getElementById(id);
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelectorAll('#secNav button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+const secIds = ['problem','traditions','thinkers','dimensions','practice','caveat','forward'];
+const secObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      document.querySelectorAll('#secNav button').forEach(button => {
+        button.classList.toggle('active', button.dataset.sec === id);
+      });
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+secIds.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) secObs.observe(el);
+});
+
+const svgA = document.getElementById('svgA');
+const svgB = document.getElementById('svgB');
+const metaA = document.getElementById('metaA');
+const metaB = document.getElementById('metaB');
+const schemaBegin = document.getElementById('schemaBegin');
+const schemaTest = document.getElementById('schemaTest');
+const schemaReset = document.getElementById('schemaReset');
+let schemaState = 'idle';
+
+function clearSchema() {
+  svgA.innerHTML = '<rect width="320" height="280" fill="#050404"/>';
+  svgB.innerHTML = '<rect width="320" height="280" fill="#050404"/>';
+  metaA.textContent = 'Awaiting task. Schema state: none.';
+  metaB.textContent = 'Awaiting task. Schema state: none.';
+  schemaBegin.disabled = false;
+  schemaTest.disabled = true;
+  schemaState = 'idle';
+}
+
+function buildFrictionless() {
+  let html = '<rect width="320" height="280" fill="#050404"/>';
+  for (let i = 0; i < 5; i++) {
+    html += `<line x1="40" y1="${50 + i * 40}" x2="280" y2="${50 + i * 40}" stroke="#1a1510" stroke-width="0.5"/>`;
+  }
+  html += `<rect x="50" y="60" width="220" height="160" fill="url(#aGrad)" stroke="#c87848" stroke-width="1" opacity="0">
+    <animate attributeName="opacity" from="0" to="1" dur="0.5s" fill="freeze"/>
+  </rect>`;
+  for (let i = 0; i < 7; i++) {
+    const w = 180 + Math.random() * 30;
+    html += `<line x1="60" y1="${78 + i * 18}" x2="${60 + w}" y2="${78 + i * 18}" stroke="#c87848" stroke-width="1" opacity="0">
+      <animate attributeName="opacity" from="0" to="0.8" begin="${0.3 + i * 0.08}s" dur="0.3s" fill="freeze"/>
+    </line>`;
+  }
+  html += '<text x="160" y="245" fill="#c87848" font-family="JetBrains Mono" font-size="9" text-anchor="middle" opacity="0"><animate attributeName="opacity" from="0" to="1" begin="1.2s" dur="0.4s" fill="freeze"/>submitted · 4:17 PM</text>';
+  html += `<defs><linearGradient id="aGrad" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#2a1f14"/>
+    <stop offset="1" stop-color="#1a1510"/>
+  </linearGradient></defs>`;
+  svgA.innerHTML = html;
+  setTimeout(() => { metaA.textContent = 'Output received. Appears complete. Schema state: opaque — cannot be inspected.'; }, 1400);
+}
+
+function buildFriction() {
+  const nodes = [
+    {x:80, y:80, delay:0.2},
+    {x:160, y:60, delay:0.9},
+    {x:240, y:100, delay:1.6},
+    {x:100, y:160, delay:2.3},
+    {x:190, y:180, delay:3.0},
+    {x:260, y:200, delay:3.7},
+    {x:150, y:230, delay:4.4}
+  ];
+  const edges = [
+    [0,1,1.0],[1,2,1.7],[0,3,2.4],[1,3,2.8],[3,4,3.1],[2,4,3.5],[4,5,3.8],[3,6,4.5],[4,6,4.8]
+  ];
+  let html = '<rect width="320" height="280" fill="#050404"/>';
+  edges.forEach(([a, b, delay]) => {
+    html += `<line x1="${nodes[a].x}" y1="${nodes[a].y}" x2="${nodes[b].x}" y2="${nodes[b].y}" stroke="#7b9168" stroke-width="1.2" stroke-dasharray="200" stroke-dashoffset="200">
+      <animate attributeName="stroke-dashoffset" from="200" to="0" begin="${delay}s" dur="0.5s" fill="freeze"/>
+    </line>`;
+  });
+  nodes.forEach((n, i) => {
+    html += `<circle cx="${n.x}" cy="${n.y}" r="0" fill="#0a0807" stroke="#7b9168" stroke-width="2">
+      <animate attributeName="r" from="0" to="8" begin="${n.delay}s" dur="0.3s" fill="freeze"/>
+    </circle>`;
+    html += `<text x="${n.x}" y="${n.y+3}" fill="#ede4cf" font-family="JetBrains Mono" font-size="8" text-anchor="middle" opacity="0">
+      <animate attributeName="opacity" from="0" to="1" begin="${n.delay + 0.3}s" dur="0.3s" fill="freeze"/>
+      ${i + 1}
+    </text>`;
+  });
+  html += '<text x="160" y="260" fill="#7b9168" font-family="JetBrains Mono" font-size="9" text-anchor="middle" opacity="0"><animate attributeName="opacity" from="0" to="1" begin="5s" dur="0.4s" fill="freeze"/>schema constructed · durable</text>';
+  svgB.innerHTML = html;
+  setTimeout(() => { metaB.textContent = 'Problem encountered. Schema constructed through effort. State: structured, connected.'; }, 5200);
+}
+
+function testFrictionless() {
+  let html = svgA.innerHTML;
+  html += '<rect x="20" y="15" width="280" height="22" fill="none" stroke="#a8341f" stroke-width="1" stroke-dasharray="3,2"/>';
+  html += '<text x="160" y="30" fill="#a8341f" font-family="JetBrains Mono" font-size="9" text-anchor="middle">NEW QUESTION: APPLY TO X</text>';
+  html += '<rect x="50" y="60" width="220" height="160" fill="#0a0807" opacity="0"><animate attributeName="opacity" from="0" to="1" begin="1s" dur="1s" fill="freeze"/></rect>';
+  html += '<text x="160" y="140" fill="#a8341f" font-family="JetBrains Mono" font-size="10" text-anchor="middle" opacity="0"><animate attributeName="opacity" from="0" to="1" begin="2s" dur="0.5s" fill="freeze"/>retention: collapsed</text>';
+  html += '<text x="160" y="160" fill="#5f574c" font-family="EB Garamond" font-style="italic" font-size="10" text-anchor="middle" opacity="0"><animate attributeName="opacity" from="0" to="1" begin="2.3s" dur="0.5s" fill="freeze"/>schema was never built</text>';
+  svgA.innerHTML = html;
+  setTimeout(() => {
+    metaA.innerHTML = 'Tested on new but related question. <span class="retain poor">RETENTION: 18%</span> · The appearance of mastery did not survive application.';
+  }, 2500);
+}
+
+function testFriction() {
+  let html = svgB.innerHTML;
+  html += '<rect x="20" y="15" width="280" height="22" fill="none" stroke="#7b9168" stroke-width="1" stroke-dasharray="3,2"/>';
+  html += '<text x="160" y="30" fill="#7b9168" font-family="JetBrains Mono" font-size="9" text-anchor="middle">NEW QUESTION: APPLY TO X</text>';
+  html += `<circle cx="220" cy="240" r="0" fill="#0a0807" stroke="#c9a35e" stroke-width="2">
+    <animate attributeName="r" from="0" to="9" begin="1s" dur="0.4s" fill="freeze"/>
+  </circle>`;
+  html += `<text x="220" y="243" fill="#c9a35e" font-family="JetBrains Mono" font-size="8" text-anchor="middle" opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="1.4s" dur="0.3s" fill="freeze"/>?
+  </text>`;
+  const newEdges = [[190,180,220,240,1.2],[150,230,220,240,1.5],[260,200,220,240,1.8]];
+  newEdges.forEach(([x1, y1, x2, y2, delay]) => {
+    html += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#c9a35e" stroke-width="1.2" stroke-dasharray="100" stroke-dashoffset="100">
+      <animate attributeName="stroke-dashoffset" from="100" to="0" begin="${delay}s" dur="0.4s" fill="freeze"/>
+    </line>`;
+  });
+  svgB.innerHTML = html;
+  setTimeout(() => {
+    metaB.innerHTML = 'Tested on new but related question. <span class="retain strong">RETENTION: 76%</span> · Schema extended to accommodate new information.';
+  }, 2500);
+}
+
+schemaBegin.addEventListener('click', () => {
+  if (schemaState !== 'idle') return;
+  schemaState = 'building';
+  schemaBegin.disabled = true;
+  metaA.textContent = 'Prompt issued to AI. Awaiting output...';
+  metaB.textContent = 'Problem identified. Beginning to work...';
+  buildFrictionless();
+  buildFriction();
+  setTimeout(() => {
+    schemaTest.disabled = false;
+    schemaState = 'built';
+  }, 5500);
+});
+schemaTest.addEventListener('click', () => {
+  if (schemaState !== 'built') return;
+  schemaState = 'tested';
+  schemaTest.disabled = true;
+  testFrictionless();
+  testFriction();
+});
+schemaReset.addEventListener('click', clearSchema);
+clearSchema();
+
+const thinkers = [
+  { year: 1916, name: "John Dewey", work: "Democracy and Education", tradition: "constructivism",
+    contrib: "Established that reflective thought requires a problematic situation — an obstacle that makes the familiar unfamiliar. Authentic learning is experiential reflection in the presence of genuine difficulty, not the passive reception of information.",
+    frictionNote: "The problematic situation is the originating form of friction. Without something to resist, there is nothing to think about." },
+  { year: 1952, name: "Jean Piaget", work: "The Origins of Intelligence in Children", tradition: "constructivism",
+    contrib: "Formalized the concepts of assimilation, accommodation, and cognitive disequilibrium. Learning occurs when existing schemas fail to accommodate new information, forcing their reconstruction.",
+    frictionNote: "Disequilibrium is the mechanism. Equilibrium without effort is not stability — it is stagnation disguised as competence." },
+  { year: 1964, name: "Marshall McLuhan", work: "Understanding Media: The Extensions of Man", tradition: "ecology",
+    contrib: "Argued that media forms shape human experience independent of their content — \"the medium is the message.\" The tools of communication restructure the minds that use them.",
+    frictionNote: "Generative AI is not a neutral delivery channel for educational content. It is a medium, and it restructures what counts as thinking." },
+  { year: 1969, name: "Neil Postman & Charles Weingartner", work: "Teaching as a Subversive Activity", tradition: "critical",
+    contrib: "Framed education as an act of resistance against conformity and unexamined transmission — positioning schools as institutions that should cultivate critical inquiry rather than credential compliance.",
+    frictionNote: "Friction is subversive by design. A pedagogy that accepts every frictionless tool as improvement has given up the subversive project." },
+  { year: 1978, name: "Lev Vygotsky", work: "Mind in Society", tradition: "constructivism",
+    contrib: "Demonstrated that higher psychological processes develop through social interaction, introducing the Zone of Proximal Development — the range of tasks a learner can complete with guided support but not alone.",
+    frictionNote: "The ZPD is where friction belongs. AI that short-circuits the zone produces no development; it only produces the appearance of it." },
+  { year: 1980, name: "Seymour Papert", work: "Mindstorms", tradition: "constructivism",
+    contrib: "Advanced constructionism — the idea that learners build knowledge most effectively by building external artifacts that encode their understanding. Computers as \"objects to think with,\" not answer-dispensers.",
+    frictionNote: "The computer as Papert imagined it had friction: it required the learner to program, to debug, to think formally. Generative AI inverts this relation." },
+  { year: 1982, name: "Walter Ong", work: "Orality and Literacy: The Technologizing of the Word", tradition: "ecology",
+    contrib: "Traced the restructuring of human consciousness across three eras: primary orality, literacy, and secondary orality. Showed that writing was not an addition to speech but a reorganization of thought.",
+    frictionNote: "The bedrock of this paper's framework. Generative AI marks a further restructuring — what the paper calls tertiary algorithmicity — that Ong's method makes legible." },
+  { year: 1985, name: "Neil Postman", work: "Amusing Ourselves to Death", tradition: "ecology",
+    contrib: "Argued that television's entertainment logic had colonized public discourse, making seriousness and sustained argument structurally harder to produce or sustain in the medium.",
+    frictionNote: "Postman's critique of television generalizes. What happens when the logic of frictionless generation colonizes the essay, the seminar, the classroom?" },
+  { year: 1997, name: "Sherry Turkle", work: "Identity in the Age of the Internet", tradition: "ecology",
+    contrib: "Examined the psychosocial consequences of mediated connection, tracking how digital environments reshape self-presentation, identity formation, and the texture of human relation.",
+    frictionNote: "Turkle's diagnosis of 'alone together' anticipates the condition of being 'learned-alongside' an AI — present with something, without being present with anyone." },
+  { year: 1998, name: "Bernard Stiegler", work: "Technics and Time", tradition: "ecology",
+    contrib: "Developed the concept of tertiary retention — externalized technical memory that shapes what can be remembered and how. Technology is not added to human cognition; human cognition is already technological.",
+    frictionNote: "Generative AI is a new kind of tertiary retention: one that does not only store, but generates. The question becomes whose memory, and whose future, it holds." },
+  { year: 2001, name: "Paulo Freire", work: "Pedagogy of Freedom", tradition: "critical",
+    contrib: "Formulated the critique of the banking model — education as deposits into passive receptacles — and named its antidote as conscientização, the development of critical consciousness through dialogic engagement.",
+    frictionNote: "Algorithmic awareness is conscientização extended. The banking model returns, frictionless, in the form of AI output that dispenses answers without inviting interrogation." },
+  { year: 2003, name: "bell hooks", work: "Teaching Community: A Pedagogy of Hope", tradition: "critical",
+    contrib: "Championed engaged pedagogy — embodied, relational, and grounded in love for the work and for learners. Resisted the reduction of teaching to disembodied efficiency.",
+    frictionNote: "Rhetorical friction — the room — is hooks' territory. Something is lost when the dialogue partner is not present, not embodied, not accountable." },
+  { year: 2011, name: "Robert & Elizabeth Bjork", work: "Making Things Hard on Yourself", tradition: "constructivism",
+    contrib: "Coined the term desirable difficulties. Interventions that slow initial performance — spacing, interleaving, generation — produce more durable long-term retention than frictionless practice.",
+    frictionNote: "The empirical case for friction at the cognitive level. What feels fluent is often what is forgotten; what feels hard is often what is learned." },
+  { year: 2011, name: "John Sweller et al.", work: "Cognitive Load Theory", tradition: "constructivism",
+    contrib: "Distinguished intrinsic, extraneous, and germane cognitive load. Germane load — the mental effort required for schema construction — is the load that must be preserved, not eliminated.",
+    frictionNote: "Not all load is equal. AI that reduces germane load is not reducing burden; it is reducing learning. This is the technical heart of unproductive success." },
+  { year: 2016, name: "Manu Kapur", work: "Productive Failure", tradition: "constructivism",
+    contrib: "Demonstrated empirically that letting students struggle with problems before direct instruction produces deeper learning. Developed the inverse taxonomy that makes unproductive success visible.",
+    frictionNote: "Kapur gives the paper its defining inversion. If productive failure is real, unproductive success is its shadow — and it is what frictionless AI most reliably produces." },
+  { year: 2017, name: "Walter Ong (posthumous)", work: "Language as Hermeneutic", tradition: "ecology",
+    contrib: "Anticipated the intensification of interpretive burden in conditions of information abundance. Meaning-making becomes harder, not easier, as symbolic output proliferates.",
+    frictionNote: "The AI era is the condition Ong anticipated. The scarce resource is no longer text; it is the capacity to read it critically." },
+  { year: 2020, name: "Henry Giroux", work: "On Critical Pedagogy", tradition: "critical",
+    contrib: "Positioned digital environments and AI as forms of public pedagogy — instructing civic identity outside the formal classroom, often more powerfully than within it.",
+    frictionNote: "The infrastructural dimension of friction is Giroux's concern. Schools do not stand outside the public pedagogy of AI; they must answer it." },
+  { year: 2022, name: "Daniel Krutka, Marie Heath & Lance Mason", work: "Civics of Technology", tradition: "critical",
+    contrib: "Formalized educational technoskepticism with the Technoskepticism Iceberg — visible technical features above, psychosocial and political effects submerged below — as a diagnostic for classroom inquiry.",
+    frictionNote: "Algorithmic awareness operationalized. The iceberg is what the AI interface hides; technoskepticism is the practice of asking what lies beneath." },
+  { year: 2024, name: "Aras Bozkurt et al.", work: "Manifesto for Teaching and Learning in a Time of Generative AI", tradition: "critical",
+    contrib: "A collective, dialectical analysis representing a critical stance against the uncritical acceptance of GenAI in academic contexts — the first major international scholarly push for deliberate pedagogical design in the AI era.",
+    frictionNote: "The manifesto form is itself a friction intervention: a refusal to let adoption proceed unexamined under the guise of inevitability." }
+];
+
+const tlRail = document.getElementById('tlRail');
+const minYear = 1916;
+const maxYear = 2024;
+thinkers.forEach((t, i) => {
+  const pct = ((t.year - minYear) / (maxYear - minYear)) * 100;
+  const el = document.createElement('div');
+  el.className = 'tl-thinker ' + t.tradition;
+  el.style.left = `calc(40px + (100% - 80px) * ${pct / 100})`;
+  el.title = `${t.year} · ${t.name}`;
+  el.dataset.idx = i;
+  el.addEventListener('click', () => renderThinker(i));
+  tlRail.appendChild(el);
+});
+
+function renderThinker(i) {
+  const t = thinkers[i];
+  document.querySelectorAll('.tl-thinker').forEach(el => el.classList.toggle('active', Number(el.dataset.idx) === i));
+  const card = document.getElementById('thinkerCard');
+  card.classList.remove('empty');
+  card.innerHTML = `
+    <div class="thinker-left">
+      <div class="year">${t.year}</div>
+      <div class="trad ${t.tradition}">${t.tradition === 'constructivism' ? 'Constructivism' : t.tradition === 'critical' ? 'Critical Pedagogy' : 'Media Ecology'}</div>
+    </div>
+    <div class="thinker-right">
+      <h4>${t.name}</h4>
+      <div class="work">${t.work}</div>
+      <div class="contrib">${t.contrib}</div>
+      <div class="friction-note">${t.frictionNote}</div>
+    </div>
+  `;
+}
+
+const dimensions = [
+  { key: 'noetic', name: 'Noetic Friction', sub: 'The Head', color: '#c87848',
+    def: "The internal cognitive struggle required to synthesize, comprehend, and integrate — what happens inside the individual learner's mind when a problem does not yield to prior schemas.",
+    preserves: "The effortful reconstruction of mental models when they fail; the germane cognitive load that Sweller's work identifies as essential; the productive disequilibrium that Piaget and Kapur describe.",
+    collapses: "A student who could not have produced the work independently cannot explain what the work says. The schema was never built because the work was externally generated.",
+    practice: "Drafting requirements that precede AI consultation; working notes visible in the submitted artifact; explanations in the learner's own words that would not survive substitution." },
+  { key: 'rhetorical', name: 'Rhetorical Friction', sub: 'The Room', color: '#7b9168',
+    def: "The dialogic resistance that occurs when ideas meet other minds — authentic, unpredictable exchange where a claim must survive objection, reformulation, and the presence of disagreement.",
+    preserves: "The Socratic seminar, the peer critique, the moment a student says something their classmate did not expect; the texture of live human response that bell hooks calls engaged pedagogy.",
+    collapses: "The student's interlocutor has been replaced by a system trained to be agreeable. Ideas no longer face contestation; they face generation of more ideas.",
+    practice: "Classroom structures that require students to respond to each other's actual thinking, not to synthesize around it; dialogue with stakes, where positions must be defended to other humans." },
+  { key: 'existential', name: 'Existential Friction', sub: 'The World', color: '#a8341f',
+    def: "The weight of intellectual ownership — the condition of being accountable, in the presence of others, for the claims one has made. Not a technique but a posture toward one's own thinking.",
+    preserves: "A student who says \"I think\" and means it; the experience of being wrong in public and learning from it; the development of intellectual character that Freire called conscientização and hooks called voice.",
+    collapses: "A student submits work they cannot defend, or defends claims they do not hold. The self is absent from the utterance. Freire's banking model, returning in frictionless form.",
+    practice: "Oral defenses of written work; required positions a student must hold and justify; assessments that do not admit the substitution of the student with another source." },
+  { key: 'infrastructural', name: 'Infrastructural Friction', sub: 'The System', color: '#4a6370',
+    def: "The institutional conditions — policies, rubrics, norms, cultural expectations, scheduling, and assessment design — that make the first three dimensions possible or impossible to sustain at scale.",
+    preserves: "Systems in which teachers can ask students to think hard without being penalized for lower compliance; rubrics that reward process, not only output; cultural norms that treat struggle as pedagogy rather than inefficiency.",
+    collapses: "Individual teachers attempting to preserve friction against institutional incentives that reward speed, throughput, and frictionless completion. The teacher loses; the system wins by default.",
+    practice: "District and school-level design choices: AI policy, assessment architecture, professional culture, time structures. The dimension where leadership either does the work or quietly undoes the other three." }
+];
+
+const dimSVG = document.getElementById('dimSVG');
+function renderDimSVG(activeKey) {
+  const cx = 210, cy = 210;
+  const r1 = 60, r2 = 180;
+  const quads = [
+    { key: 'noetic', label: 'NOETIC', sublabel: 'the head', color: '#c87848', x: 120, y: 120, start: -135 },
+    { key: 'rhetorical', label: 'RHETORICAL', sublabel: 'the room', color: '#7b9168', x: 300, y: 120, start: -45 },
+    { key: 'existential', label: 'EXISTENTIAL', sublabel: 'the world', color: '#a8341f', x: 300, y: 300, start: 45 },
+    { key: 'infrastructural', label: 'INFRASTRUCTURAL', sublabel: 'the system', color: '#4a6370', x: 120, y: 300, start: 135 }
+  ];
+  let html = `<circle cx="${cx}" cy="${cy}" r="${r2}" fill="#050404" stroke="#2a241c"/>`;
+  quads.forEach(q => {
+    const a0 = (q.start - 45) * Math.PI / 180;
+    const a1 = (q.start + 45) * Math.PI / 180;
+    const x0 = cx + r2 * Math.cos(a0), y0 = cy + r2 * Math.sin(a0);
+    const x1 = cx + r2 * Math.cos(a1), y1 = cy + r2 * Math.sin(a1);
+    const x0i = cx + r1 * Math.cos(a0), y0i = cy + r1 * Math.sin(a0);
+    const x1i = cx + r1 * Math.cos(a1), y1i = cy + r1 * Math.sin(a1);
+    const opacity = activeKey === null ? 0.75 : (q.key === activeKey ? 1 : 0.25);
+    const fillOpacity = q.key === activeKey ? '0.22' : '0.08';
+    html += `<g class="dim-quad" data-key="${q.key}" style="opacity:${opacity}">
+      <path d="M ${x0i} ${y0i} L ${x0} ${y0} A ${r2} ${r2} 0 0 1 ${x1} ${y1} L ${x1i} ${y1i} A ${r1} ${r1} 0 0 0 ${x0i} ${y0i} Z" fill="${q.color}" fill-opacity="${fillOpacity}" stroke="${q.color}" stroke-width="1"/>
+      <text x="${q.x}" y="${q.y}" fill="${q.color}" font-family="JetBrains Mono" font-size="12" font-weight="700" letter-spacing="1" text-anchor="middle">${q.label}</text>
+      <text x="${q.x}" y="${q.y + 18}" fill="${q.color}" font-family="EB Garamond" font-style="italic" font-size="13" text-anchor="middle" opacity="0.75">${q.sublabel}</text>
+    </g>`;
+  });
+  html += `<circle cx="${cx}" cy="${cy}" r="${r1}" fill="#0a0807" stroke="#c87848" stroke-width="1.5"/>`;
+  html += `<text x="${cx}" y="${cy - 4}" fill="#c87848" font-family="Cormorant Garamond" font-style="italic" font-size="18" text-anchor="middle">Pedagogical</text>`;
+  html += `<text x="${cx}" y="${cy + 16}" fill="#c87848" font-family="Cormorant Garamond" font-style="italic" font-weight="500" font-size="22" text-anchor="middle">Friction</text>`;
+  dimSVG.innerHTML = html;
+  dimSVG.querySelectorAll('.dim-quad').forEach(g => {
+    g.addEventListener('click', () => {
+      const key = g.dataset.key;
+      renderDimSVG(key);
+      renderDimPanel(key);
+    });
+  });
+}
+
+function renderDimPanel(key) {
+  const d = dimensions.find(x => x.key === key);
+  const panel = document.getElementById('dimPanel');
+  panel.innerHTML = `
+    <div class="dim-title" style="color:${d.color}">${d.name}</div>
+    <div class="dim-subtitle">— ${d.sub}</div>
+    <div class="dim-def">${d.def}</div>
+    <div class="dim-row preserves"><div class="row-label">What it preserves</div><p>${d.preserves}</p></div>
+    <div class="dim-row collapses"><div class="row-label">How it collapses under frictionless AI</div><p>${d.collapses}</p></div>
+    <div class="dim-row practice"><div class="row-label">A practice that supports it</div><p>${d.practice}</p></div>
+  `;
+}
+renderDimSVG(null);
+
+const scenarios = [
+  {
+    tag: "CASE · HIGH SCHOOL ENGLISH",
+    text: "A ninth-grader submits an essay on <em>To Kill a Mockingbird</em> that is markedly more polished than their prior work. When asked, during class discussion, to explain the central claim of their own essay, they cannot do so. The student does not admit to using AI; they also do not deny it.",
+    choices: [
+      {
+        text: "Accept the essay. The rubric is met; pedagogy must adapt to new tools and meet students where they are.",
+        scores: { n: 10, r: 15, e: 10, i: 20 },
+        verdict: "Collapse across all four dimensions",
+        feedback: "This choice treats the rubric as sufficient evidence of learning. It may preserve a teacher's time and avoid confrontation, but it teaches the student — and the class watching — that fluent output is what school actually values. The noetic, rhetorical, and existential dimensions all collapse; the infrastructural dimension is eroded because the precedent is now set for future submissions."
+      },
+      {
+        text: "Rewrite the assignment to be AI-proof — require a personal connection or local detail that a chatbot cannot generate.",
+        scores: { n: 50, r: 30, e: 35, i: 55 },
+        verdict: "Partial preservation — but the framing is defensive",
+        feedback: "This is the most common institutional response and it has real merit, but the underlying logic is technicist: it treats AI as an adversary to be outsmarted rather than a medium to be interrogated. It may preserve some noetic work, but the deeper pedagogical move — teaching students to think with and against AI — is deferred. The arms race favors whoever has the newest model."
+      },
+      {
+        text: "Require an oral defense of the essay in front of peers before accepting the submission.",
+        scores: { n: 55, r: 85, e: 90, i: 65 },
+        verdict: "Strong on rhetorical and existential — weaker on noetic",
+        feedback: "This choice directly addresses the room and the world: the student now has to face their own claims in the presence of others. It will quickly surface when an essay has no author. But the noetic work may still be absent — the student may learn to bluff through defenses rather than to build schema. Most effective when paired with process requirements."
+      },
+      {
+        text: "Redirect the student to a schema-construction version of the task: annotated source passages, a working draft with visible revisions, and a short reflection on a specific argumentative choice they made.",
+        scores: { n: 90, r: 70, e: 80, i: 80 },
+        verdict: "Strong across all four dimensions",
+        feedback: "This response treats the essay not as the evidence of learning but as the artifact of a process that is the learning. It makes the noetic work visible, restores the rhetorical and existential dimensions through requiring the student to hold positions they can explain, and creates an infrastructural precedent that process is the thing being assessed. The teacher also gains an honest diagnostic: either the student can do this work or they cannot, and either answer is actionable."
+      }
+    ]
+  },
+  {
+    tag: "CASE · MIDDLE SCHOOL SOCIAL STUDIES",
+    text: "A seventh-grade social studies teacher is designing a unit on the civil rights movement. A colleague suggests having students use AI to generate multiple primary-source-style perspectives on key events — \"to save time on the research phase so we can focus on discussion.\" The teacher is uncertain.",
+    choices: [
+      {
+        text: "Accept the suggestion. Efficiency on research frees class time for discussion, which is the higher-order thinking.",
+        scores: { n: 20, r: 55, e: 25, i: 30 },
+        verdict: "Mistakes the task — research <em>is</em> the thinking",
+        feedback: "This response accepts a false separation between research and thinking. In a civil rights unit in particular, the act of reading and interpreting actual primary sources — their contradictions, their voices, their partiality — <em>is</em> the higher-order work. AI-generated 'perspectives' are neither primary nor genuinely plural; they are a statistical aggregation trained on corpora with their own silences."
+      },
+      {
+        text: "Decline AI use entirely in this unit. Students will engage only with archival documents and historiographic sources.",
+        scores: { n: 80, r: 70, e: 75, i: 50 },
+        verdict: "Preserves noetic and existential work — but misses algorithmic awareness",
+        feedback: "This is a defensible purist move and will produce real historical work. But the unit also misses an opportunity: having students analyze AI-generated 'primary sources' as texts — interrogating what those texts include, exclude, and flatten — would itself be a powerful lesson in both historical thinking and algorithmic awareness. Refusing AI in this case forgoes the technoskeptical move."
+      },
+      {
+        text: "Use archival sources for the core reading, then have students analyze AI-generated \"primary perspectives\" as evidence of what the model's training corpus makes visible or invisible about this history.",
+        scores: { n: 85, r: 80, e: 80, i: 85 },
+        verdict: "Strong — integrates content with algorithmic awareness",
+        feedback: "This response treats AI output as a text to be read critically — which is exactly what Krutka, Heath, and Mason's technoskepticism framework, and Freire's conscientização applied to AI, demand. Students do the primary source work <em>and</em> develop literacy about the medium that increasingly mediates their information environment. This is friction as pedagogy rather than friction as refusal."
+      },
+      {
+        text: "Have students first write their own primary-source interpretations, then compare them to AI-generated versions and analyze the differences.",
+        scores: { n: 90, r: 70, e: 80, i: 75 },
+        verdict: "Strong — productive friction preceding algorithmic comparison",
+        feedback: "This sequence preserves noetic work before introducing AI — students build their own schema through primary-source analysis before encountering algorithmic output. The comparison then becomes a learning event rather than a shortcut. Slightly less rich than the technoskeptical analysis option in terms of explicit algorithmic awareness, but stronger on germane cognitive load."
+      }
+    ]
+  },
+  {
+    tag: "CASE · DISTRICT POLICY",
+    text: "A superintendent asks the director of innovation to draft a district-wide AI policy for the coming school year. The board wants something that \"protects academic integrity\" while \"preparing students for the future.\" Time is short.",
+    choices: [
+      {
+        text: "A detection-focused policy: identify AI-generated work and apply consequences. Update the student handbook's plagiarism section to include AI.",
+        scores: { n: 25, r: 20, e: 30, i: 40 },
+        verdict: "Treats a pedagogical problem as an enforcement problem",
+        feedback: "This policy is the most common first draft and one of the least durable. AI detection tools are unreliable and disproportionately flag emergent bilingual writers and neurodivergent students. More fundamentally, it addresses the symptom (undisclosed AI use) rather than the condition (unproductive success). A detection policy buys a few months before it becomes a credibility problem."
+      },
+      {
+        text: "A permissive policy: AI is allowed across the board; students are expected to disclose use; teachers adapt their assignments.",
+        scores: { n: 30, r: 30, e: 35, i: 25 },
+        verdict: "Defers the hard decisions to individual teachers",
+        feedback: "This policy appears liberal but quietly offloads all the pedagogical work onto individual teachers, who now must fight the default tide alone. Without infrastructural support — rubric exemplars, assessment architecture, protected time for redesign — most teachers will gradually accept frictionless AI use as a de facto standard, because the institutional incentives favor speed."
+      },
+      {
+        text: "A dimensional policy: define which pedagogical dimensions the district commits to preserving (e.g., existential accountability, noetic process visibility) and build AI use guidance around those commitments.",
+        scores: { n: 75, r: 75, e: 85, i: 95 },
+        verdict: "Strong on infrastructural — rooted in pedagogical commitments",
+        feedback: "This is a policy that is actually about education. Rather than beginning with AI and asking what to do about it, it begins with what the district believes learning is and asks what that commits them to regarding AI. The result is more durable because it can adapt to new tools — the commitments do not need to be rewritten when the next model ships."
+      },
+      {
+        text: "A hybrid: detection language for egregious cases, plus a dimensional framework guiding assignment and assessment redesign. Include professional learning time for teachers to implement it.",
+        scores: { n: 75, r: 75, e: 80, i: 90 },
+        verdict: "Strong — realist accommodation of political constraints",
+        feedback: "This is probably the most implementable version of the dimensional approach in a real district context. It gives the board the enforcement language they want while routing the actual pedagogical work through dimensional redesign with infrastructural support. The risk is that the detection language gets emphasized in practice while the redesign work gets deferred — leadership attention determines which half dominates."
+      }
+    ]
+  }
+];
+
+let currentScenario = 0;
+let selectedChoice = -1;
+function renderScenario() {
+  const s = scenarios[currentScenario];
+  document.getElementById('scTag').textContent = s.tag;
+  document.getElementById('scText').innerHTML = s.text;
+  document.getElementById('scenarioCount').textContent = `Scenario ${currentScenario + 1} of ${scenarios.length}`;
+  const choicesEl = document.getElementById('choicesEl');
+  choicesEl.innerHTML = '';
+  s.choices.forEach((c, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice';
+    btn.innerHTML = `<span class="letter">${String.fromCharCode(65 + i)}.</span>${c.text}`;
+    btn.addEventListener('click', () => selectChoice(i));
+    choicesEl.appendChild(btn);
+  });
+  document.getElementById('feedbackEl').innerHTML = '';
+  selectedChoice = -1;
+}
+
+function selectChoice(i) {
+  const s = scenarios[currentScenario];
+  selectedChoice = i;
+  document.querySelectorAll('#choicesEl .choice').forEach((el, idx) => el.classList.toggle('selected', idx === i));
+  const c = s.choices[i];
+  const dimLabels = [
+    ['Noetic · the head', c.scores.n],
+    ['Rhetorical · the room', c.scores.r],
+    ['Existential · the world', c.scores.e],
+    ['Infrastructural · the system', c.scores.i]
+  ];
+  const meterHtml = dimLabels.map(([label, val]) => {
+    const cls = val >= 70 ? 'preserved' : val >= 40 ? 'partial' : 'collapsed';
+    const word = val >= 70 ? 'preserved' : val >= 40 ? 'partial' : 'collapsed';
+    return `<div class="dim-meter">
+      <div class="dim-name">${label}</div>
+      <div class="dim-bar-wrap"><div class="dim-bar ${cls}" style="width:${val}%"></div></div>
+      <div class="dim-val">${word}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('feedbackEl').innerHTML = `
+    <div class="feedback">
+      <h5>Response ${String.fromCharCode(65 + i)} · ${c.verdict}</h5>
+      ${meterHtml}
+      <div class="feedback-text">${c.feedback}</div>
+    </div>
+  `;
+}
+
+document.getElementById('scNext').addEventListener('click', () => {
+  currentScenario = (currentScenario + 1) % scenarios.length;
+  renderScenario();
+  document.getElementById('practice').scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+document.getElementById('scPrev').addEventListener('click', () => {
+  currentScenario = (currentScenario - 1 + scenarios.length) % scenarios.length;
+  renderScenario();
+  document.getElementById('practice').scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+renderScenario();
+
+const sorterItems = [
+  { text: "Requiring a working draft before AI consultation", answer: "productive",
+    rationale: "Productive. Preserves noetic work by ensuring the student builds initial schema before encountering generated text. The draft becomes the evidence of cognitive engagement." },
+  { text: "Surprise pop quizzes as the primary source of grades", answer: "exclusionary",
+    rationale: "Exclusionary. Punishes students whose life circumstances (work, care, sleep, mental health) prevent consistent availability; conflates performance-on-command with learning." },
+  { text: "Socratic seminar on a contested reading", answer: "productive",
+    rationale: "Productive. Core rhetorical friction. Requires students to hold positions in front of peers and encounter genuine disagreement — the texture of thinking with other minds." },
+  { text: "English-only submission requirements in a classroom with emergent bilingual students", answer: "exclusionary",
+    rationale: "Exclusionary. Blocks students from demonstrating thinking they have in a language that is not the assessed one. Prevents participation rather than developing capacity." },
+  { text: "Oral defense of written work", answer: "productive",
+    rationale: "Productive. Existential friction at its most direct: the student must be present for, and accountable to, their own claims. Reveals unproductive success quickly and gently." },
+  { text: "Strict handwriting-only assignments in a mixed-ability classroom", answer: "context",
+    rationale: "Context-dependent. Handwriting can build embodied practice and slow composition in productive ways; it can also exclude students with motor, dysgraphic, or executive-function challenges. The same practice reads as either, depending on accommodation and intent." },
+  { text: "Unexplained rubric changes after submission", answer: "exclusionary",
+    rationale: "Exclusionary. Violates the transparency without which no rigorous assessment can be fair. Resembles productive friction (\"meeting a high bar\") but is actually a moving bar." },
+  { text: "Requiring students to explain their reasoning in their own words before accepting AI-assisted work", answer: "productive",
+    rationale: "Productive. Makes noetic work visible and enforces existential accountability. One of the most durable friction practices in the AI era." },
+  { text: "Tight deadlines with no flexibility for caregiving or medical circumstances", answer: "exclusionary",
+    rationale: "Exclusionary. Confuses rigor with inflexibility. Productive time pressure exists, but it is pressure on the thinking, not pressure to be free of a life outside school." },
+  { text: "Process logs that make drafts, revisions, and AI consultations visible", answer: "productive",
+    rationale: "Productive. Shifts assessment from output to process, which is where learning actually lives. The infrastructural dimension of friction, translated into an assignment." },
+  { text: "Complex academic vocabulary in primary readings", answer: "context",
+    rationale: "Context-dependent. Building vocabulary through productive encounters with challenging text is core literacy work; using unfamiliar vocabulary as a gate without scaffolding is exclusion. The difference is whether support is provided." },
+  { text: "Required peer review before submission", answer: "productive",
+    rationale: "Productive. Creates rhetorical friction and introduces another human reader into what would otherwise be a student-AI dyad. One of the simplest infrastructural moves available." }
+];
+
+const sorterFrame = document.getElementById('sorterFrame');
+const sortedCountEl = document.getElementById('sortedCount');
+const sortedTotalEl = document.getElementById('sortedTotal');
+sortedTotalEl.textContent = sorterItems.length;
+let sortedCount = 0;
+
+sorterItems.forEach((item, idx) => {
+  const row = document.createElement('div');
+  row.className = 'sorter-item';
+  row.dataset.idx = idx;
+  row.innerHTML = `
+    <div class="sorter-content">
+      <span>${item.text}</span>
+    </div>
+    <div class="sorter-buttons">
+      <button class="prod" data-v="productive">Productive</button>
+      <button class="exc" data-v="exclusionary">Exclusionary</button>
+      <button class="ctx" data-v="context">Context-dep.</button>
+    </div>
+    <div class="sorter-feedback"></div>
+  `;
+  row.querySelectorAll('.sorter-buttons button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const choice = btn.dataset.v;
+      row.classList.remove('productive', 'exclusionary', 'context', 'correct', 'incorrect');
+      row.classList.add('sorted', choice);
+      const correct = choice === item.answer;
+      row.classList.add(correct ? 'correct' : 'incorrect');
+      row.querySelector('.sorter-feedback').textContent = item.rationale + (correct ? '' : ' — Your choice differs from the rationale above; the rationale is there for reflection, not as a grade.');
+      row.querySelectorAll('.sorter-buttons button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      updateSorterCount();
+    });
+  });
+  sorterFrame.appendChild(row);
+});
+
+function updateSorterCount() {
+  sortedCount = document.querySelectorAll('.sorter-item.sorted').length;
+  sortedCountEl.textContent = sortedCount;
+}
+</script>
+</body>
+</html>
