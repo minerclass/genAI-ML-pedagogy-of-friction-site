@@ -1,6 +1,8 @@
-# The Pedagogy of Friction
+# Pedagogical Friction
 
-An interactive one-page website: **The Pedagogy of Friction — An Interactive Companion**.
+An interactive one-page website: **Pedagogical Friction - An Interactive Companion**.
+
+This site supports *Beyond Secondary Orality: Tertiary Algorithmicity and the Case for Pedagogical Friction* by translating the paper's framework into interactive explanations, scenarios, and sorting activities. It now foregrounds the productive/exclusionary friction distinction, including accessibility, multilingual learning, and algorithmic code-switching concerns.
 
 ## Files
 
@@ -15,4 +17,3 @@ An interactive one-page website: **The Pedagogy of Friction — An Interactive C
 5. Save, then wait for GitHub Pages to publish the site.
 
 GitHub Pages will serve `index.html` automatically as the site homepage.
-
