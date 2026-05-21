@@ -35,6 +35,7 @@
     font-family: 'IBM Plex Sans', sans-serif;
     line-height: 1.55;
   }
+  html { scroll-behavior: smooth; }
   body { overflow-x: hidden; }
 
   body::before {
@@ -126,6 +127,42 @@
     z-index: 2;
   }
   .byline span { color: var(--ink-dim); }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 2rem;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-actions a {
+    border: 1px solid var(--rule);
+    color: var(--ink-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.65rem 0.9rem;
+    transition: all 0.2s ease;
+  }
+  .hero-actions a:hover,
+  .hero-actions a:focus-visible {
+    border-color: var(--copper);
+    color: var(--ink);
+    outline: none;
+  }
+  .hero-actions a.primary {
+    background: var(--copper);
+    border-color: var(--copper);
+    color: var(--bg);
+    font-weight: 600;
+  }
+  .hero-actions a.primary:hover,
+  .hero-actions a.primary:focus-visible {
+    background: var(--copper-bright);
+    border-color: var(--copper-bright);
+  }
 
   nav.eras {
     position: sticky;
@@ -162,11 +199,110 @@
     font-weight: 500;
   }
 
+  .practice-route {
+    padding: 3rem 2rem 2rem;
+    border-bottom: 1px solid var(--rule);
+    background:
+      linear-gradient(135deg, rgba(200,120,72,0.08), transparent 42%),
+      linear-gradient(180deg, var(--bg-2), var(--bg));
+    position: relative;
+    z-index: 2;
+    scroll-margin-top: 4.5rem;
+  }
+  .practice-route .inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(260px, 0.8fr) minmax(320px, 1.2fr);
+    gap: 1.5rem;
+    align-items: stretch;
+  }
+  .route-copy,
+  .route-panel {
+    border: 1px solid var(--rule);
+    background: rgba(25,21,15,0.78);
+    padding: 1.35rem;
+  }
+  .route-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--copper);
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+  .route-copy h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.3rem);
+    font-weight: 300;
+    line-height: 0.95;
+    margin-bottom: 1rem;
+  }
+  .route-copy p,
+  .route-summary {
+    font-family: 'EB Garamond', serif;
+    color: var(--ink-dim);
+    font-size: 1.05rem;
+    line-height: 1.55;
+  }
+  .route-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .route-buttons button,
+  .route-jumps a {
+    background: transparent;
+    border: 1px solid var(--rule);
+    color: var(--ink-dim);
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    line-height: 1.4;
+    padding: 0.75rem;
+    text-align: left;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+  }
+  .route-buttons button:hover,
+  .route-buttons button:focus-visible,
+  .route-jumps a:hover,
+  .route-jumps a:focus-visible {
+    border-color: var(--copper);
+    color: var(--ink);
+    outline: none;
+  }
+  .route-buttons button.active {
+    background: rgba(200,120,72,0.12);
+    border-color: var(--copper);
+    color: var(--ink);
+  }
+  .route-summary {
+    border-top: 1px dashed var(--rule);
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
+  .route-jumps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1rem;
+  }
+  .route-jumps a {
+    display: inline-flex;
+    text-decoration: none;
+    text-align: center;
+    padding: 0.55rem 0.7rem;
+  }
+
   section.sec {
     padding: 6rem 2rem;
     border-bottom: 1px solid var(--rule);
     position: relative;
     z-index: 2;
+    scroll-margin-top: 4.5rem;
   }
   section.sec .inner { max-width: 1200px; margin: 0 auto; }
   .sec-header {
@@ -942,6 +1078,8 @@
     .dimensions-frame { grid-template-columns: 1fr; }
     .thinker-card { grid-template-columns: 1fr; gap: 1rem; }
     .sec-header { grid-template-columns: 1fr; gap: 0.5rem; }
+    .practice-route .inner { grid-template-columns: 1fr; }
+    .route-buttons { grid-template-columns: 1fr; }
   }
 
   @keyframes fadeUp {
@@ -959,6 +1097,10 @@
   <h1 class="title">Pedagogical <em>Friction</em></h1>
   <p class="subtitle">On the intentional preservation of productive noetic, rhetorical, existential, and infrastructural resistance in an era where frictionless automation has become the pedagogical default.</p>
   <div class="byline"><span>A companion to <em>Beyond Secondary Orality</em> by Micah J. Miner.</span> &nbsp;·&nbsp; Move through the argument at your own pace. Every section is interactive.</div>
+  <div class="hero-actions" aria-label="Primary site actions">
+    <a class="primary" href="#practice-route">Choose a practice route</a>
+    <a href="https://minerclass.github.io/dissertationquestionsbeta/dissertation-sites/">Back to dissertation sites</a>
+  </div>
 </header>
 
 <nav class="eras" id="secNav">
@@ -970,6 +1112,22 @@
   <button data-sec="caveat">§ VI The Critical Caveat</button>
   <button data-sec="forward">§ VII A Path Forward</button>
 </nav>
+
+<section class="practice-route" id="practice-route" aria-label="Practice routes through Pedagogical Friction">
+  <div class="inner">
+    <div class="route-copy">
+      <div class="route-kicker">Reader routes</div>
+      <h2>Enter through the work you need to do.</h2>
+      <p>This companion can be read straight through, but the construct is easier to use when the path matches the task: committee skim, classroom design, equity check, or theory lineage.</p>
+    </div>
+    <div class="route-panel">
+      <div class="route-kicker">Select a route</div>
+      <div class="route-buttons" id="routeButtons"></div>
+      <p class="route-summary" id="routeSummary"></p>
+      <div class="route-jumps" id="routeJumps" aria-label="Route section links"></div>
+    </div>
+  </div>
+</section>
 
 <section class="sec" id="problem">
   <div class="inner">
@@ -1243,6 +1401,62 @@
 </footer>
 
 <script>
+const practiceRoutes = [
+  {
+    title: 'Problem skim',
+    summary: 'Start with unproductive success, inspect the four dimensions, then move to the design stance. This is the fastest route for seeing the core claim.',
+    sections: ['problem','dimensions','forward']
+  },
+  {
+    title: 'Practice design',
+    summary: 'Use the dimensions and classroom scenarios to think through assignment, assessment, and policy design without turning friction into punishment.',
+    sections: ['dimensions','practice','forward']
+  },
+  {
+    title: 'Equity check',
+    summary: 'Foreground the productive and exclusionary distinction before applying friction as a design principle. This path keeps the caveat in view.',
+    sections: ['caveat','practice','forward']
+  },
+  {
+    title: 'Theory lineage',
+    summary: 'Read the construct through constructivism, critical pedagogy, and media ecology before applying it to the four dimensions.',
+    sections: ['traditions','thinkers','dimensions']
+  }
+];
+
+const routeButtons = document.getElementById('routeButtons');
+const routeSummary = document.getElementById('routeSummary');
+const routeJumps = document.getElementById('routeJumps');
+
+function sectionLabel(id) {
+  const button = document.querySelector(`#secNav button[data-sec="${id}"]`);
+  return button ? button.textContent.replace('§', '').trim() : id;
+}
+
+function renderPracticeRoute(index = 0) {
+  const route = practiceRoutes[index];
+  if (!routeButtons || !routeSummary || !routeJumps || !route) return;
+  routeButtons.querySelectorAll('button').forEach((button, buttonIndex) => {
+    const isActive = buttonIndex === index;
+    button.classList.toggle('active', isActive);
+    button.setAttribute('aria-pressed', String(isActive));
+  });
+  routeSummary.textContent = route.summary;
+  routeJumps.innerHTML = route.sections.map(id => {
+    return `<a href="#${id}">${sectionLabel(id)}</a>`;
+  }).join('');
+}
+
+if (routeButtons) {
+  routeButtons.innerHTML = practiceRoutes.map((route, index) => {
+    return `<button type="button" data-route="${index}" aria-pressed="false">${route.title}</button>`;
+  }).join('');
+  routeButtons.querySelectorAll('button').forEach(button => {
+    button.addEventListener('click', () => renderPracticeRoute(Number(button.dataset.route)));
+  });
+  renderPracticeRoute();
+}
+
 document.querySelectorAll('#secNav button').forEach(btn => {
   btn.addEventListener('click', () => {
     const id = btn.dataset.sec;
